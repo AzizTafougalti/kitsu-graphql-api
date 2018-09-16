@@ -1,0 +1,31 @@
+{
+  "name": "kitsu-graphql-api",
+  "version": "1.0.0",
+  "description": "A graphql wrapper for kitsu api",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AzizTafougalti/kitsu-graphql-api.git"
+  },
+  "keywords": [
+    "kitsu",
+    "anime",
+    "manga"
+  ],
+  "author": "Aziz Tafougalti",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AzizTafougalti/kitsu-graphql-api/issues"
+  },
+  "homepage": "https://github.com/AzizTafougalti/kitsu-graphql-api#readme",
+  "dependencies": {
+    "express": "^4.16.3",
+    "express-graphql": "^0.6.12",
+    "graphql": "^14.0.2",
+    "request": "^2.88.0",
+    "util": "^0.11.0"
+  }
+}
