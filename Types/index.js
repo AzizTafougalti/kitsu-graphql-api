@@ -38,9 +38,7 @@ module.exports = new _Schema({
                             filterString += filter[key]
                         }
                     }
-                    console.log(filter)
-                    console.log(filterString)
-                    return parseMany(`${trending ? 'trending/' : ''}anime?page%5Blimit%5D=${limit}&page%5Boffset%5D=${limit * (page - 1)}${filterString}&sort=${sort}`)
+                    return parseMany(`${trending ? 'trending/' : ''}anime?page%5Blimit%5D=${limit}&page%5Boffset%5D=${limit * (page - 1)}${filterString}${sort ? '&sort=' + sort : ''}`)
                 }
             },
             genre: {
