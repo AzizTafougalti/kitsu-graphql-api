@@ -1,4 +1,4 @@
-const { _Schema, _Object, id, int, list, bool } = require('../Alias')
+const { _Schema, _Object, id, int, list, bool, string } = require('../Alias')
 const Anime = require('./Anime')
 const Genre = require('./Genre')
 const Category = require('./Category')
@@ -20,8 +20,8 @@ module.exports = new _Schema({
             },
             animes: {
                 type: list(Anime),
-                args: { limit: { type: int, defaultValue: 10 }, page: { type: int, defaultValue: 1 }, trending: { type: bool }, filter: { type: Scalar } },
-                resolve(source, { limit, page, trending, filter }) {
+                args: { limit: { type: int, defaultValue: 10 }, page: { type: int, defaultValue: 1 }, trending: { type: bool }, filter: { type: Scalar }, sort: { type: string } },
+                resolve(source, { limit, page, trending, filter, sort }) {
                     let filterString = ''
                     for (key in filter) {
                         filterString += `&filter%5B${key}%5D=`
@@ -40,7 +40,7 @@ module.exports = new _Schema({
                     }
                     console.log(filter)
                     console.log(filterString)
-                    return parseMany(`${trending ? 'trending/' : ''}anime?page%5Blimit%5D=${limit}&page%5Boffset%5D=${limit * (page - 1)}${filterString}`)
+                    return parseMany(`${trending ? 'trending/' : ''}anime?page%5Blimit%5D=${limit}&page%5Boffset%5D=${limit * (page - 1)}${filterString}&sort=${sort}`)
                 }
             },
             genre: {
