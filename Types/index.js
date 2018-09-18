@@ -1,10 +1,11 @@
-const { _Schema, _Object, id, int, list } = require('../Alias')
+const { _Schema, _Object, id, int, list, bool } = require('../Alias')
 const Anime = require('./Anime')
 const Genre = require('./Genre')
 const Category = require('./Category')
 const Person = require('./Person')
 const Character = require('./Character')
 const { parseOne, parseMany } = require('../Geter')
+const Scalar = require('../Scalar')
 
 module.exports = new _Schema({
     query: new _Object({
@@ -19,9 +20,27 @@ module.exports = new _Schema({
             },
             animes: {
                 type: list(Anime),
-                args: { limit: { type: int, defaultValue: 10 }, page: { type: int, defaultValue: 1 } },
-                resolve(source, { limit, page }) {
-                    return parseMany(`anime?page%5Blimit%5D=${limit}&page%5Boffset%5D=${limit * (page - 1)}`)
+                args: { limit: { type: int, defaultValue: 10 }, page: { type: int, defaultValue: 1 }, trending: { type: bool }, filter: { type: Scalar } },
+                resolve(source, { limit, page, trending, filter }) {
+                    let filterString = ''
+                    for (key in filter) {
+                        filterString += `&filter%5B${key}%5D=`
+                        if (filter[key].min) {
+                            filterString += `${filter[key].min}..${filter[key].max}`
+                        }
+                        else if (typeof filter[key] == 'object') {
+                            filter[key].forEach(element => {
+                                filterString += `${element}%2C`
+                            })
+                            filterString = filterString.slice(0, -3)
+                        }
+                        else {
+                            filterString += filter[key]
+                        }
+                    }
+                    console.log(filter)
+                    console.log(filterString)
+                    return parseMany(`${trending ? 'trending/' : ''}anime?page%5Blimit%5D=${limit}&page%5Boffset%5D=${limit * (page - 1)}${filterString}`)
                 }
             },
             genre: {
