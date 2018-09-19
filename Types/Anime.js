@@ -1,4 +1,4 @@
-const { _Object, id, string, int, float, list } = require('../Alias')
+const { _Object, id, string, int, float, list, bool } = require('../Alias')
 const { parseOne, parseMany } = require('../Geter')
 const ScaleImage = require('./ScaleImage')
 
@@ -8,7 +8,10 @@ let Anime = new _Object({
         id: { type: id },
         synopsis: { type: string },
         canonicalTitle: { type: string },
+        abbreviatedTitles: { type: list(string) },
         averageRating: { type: float },
+        userCount: { type: int },
+        favoritesCount: { type: int },
         startDate: { type: string },
         endDate: { type: string },
         nextRelease: { type: string },
@@ -18,6 +21,7 @@ let Anime = new _Object({
         ageRatingGuide: { type: string },
         subtype: { type: string },
         status: { type: string },
+        tba: { type: string },
         posterImage: { type: ScaleImage },
         coverImage: { type: ScaleImage },
         episodeCount: { type: int },
@@ -25,6 +29,7 @@ let Anime = new _Object({
         totalLength: { type: int },
         youtubeVideoId: { type: string },
         showType: { type: string },
+        nsfw: { type: bool },
         genres: {
             type: list(require('./Genre')),
             args: { limit: { type: int, defaultValue: 10 }, page: { type: int, defaultValue: 1 } },

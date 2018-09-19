@@ -20,8 +20,8 @@ module.exports = new _Schema({
             },
             animes: {
                 type: list(Anime),
-                args: { limit: { type: int, defaultValue: 10 }, page: { type: int, defaultValue: 1 }, trending: { type: bool }, filter: { type: Scalar }, sort: { type: string } },
-                resolve(source, { limit, page, trending, filter, sort }) {
+                args: { limit: { type: int, defaultValue: 10 }, page: { type: int, defaultValue: 1 }, filter: { type: Scalar }, sort: { type: string } },
+                resolve(source, { limit, page, filter, sort }) {
                     let filterString = ''
                     for (key in filter) {
                         filterString += `&filter%5B${key}%5D=`
@@ -38,7 +38,14 @@ module.exports = new _Schema({
                             filterString += filter[key]
                         }
                     }
-                    return parseMany(`${trending ? 'trending/' : ''}anime?page%5Blimit%5D=${limit}&page%5Boffset%5D=${limit * (page - 1)}${filterString}${sort ? '&sort=' + sort : ''}`)
+                    return parseMany(`anime?page%5Blimit%5D=${limit}&page%5Boffset%5D=${limit * (page - 1)}${filterString}${sort ? '&sort=' + sort : ''}`)
+                }
+            },
+            trending: {
+                type: list(Anime),
+                args: { limit: { type: int, defaultValue: 10 } },
+                resolve(source, { limit }) {
+                    return parseMany(`trending/anime?limit=${limit}`)
                 }
             },
             genre: {
